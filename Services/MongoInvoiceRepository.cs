@@ -24,6 +24,7 @@ public sealed class MongoInvoiceRepository : IInvoiceRepository
     {
         var record = new InvoiceRecord
         {
+            Id = ObjectId.GenerateNewId().ToString(),
             CreatedAtUtc = DateTime.UtcNow,
             Invoice = invoice
         };
