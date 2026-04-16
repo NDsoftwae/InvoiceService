@@ -40,6 +40,18 @@ public sealed class InvoicesController : ControllerBase
         return Ok(new { deleted_count = deletedCount });
     }
 
+    [HttpDelete("all")]
+    public Task<ActionResult<object>> DeleteAllAtExplicitRoute(CancellationToken cancellationToken)
+    {
+        return DeleteAll(cancellationToken);
+    }
+
+    [HttpPost("delete-all")]
+    public Task<ActionResult<object>> DeleteAllViaPost(CancellationToken cancellationToken)
+    {
+        return DeleteAll(cancellationToken);
+    }
+
     [HttpGet("{id:length(24)}")]
     public async Task<ActionResult<InvoiceResponse>> GetById(string id, CancellationToken cancellationToken)
     {
