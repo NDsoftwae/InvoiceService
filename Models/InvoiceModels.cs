@@ -85,10 +85,9 @@ public sealed class SellerDetails
     [BsonElement("name")]
     public string Name { get; set; } = string.Empty;
 
-    [Required]
     [JsonPropertyName("address")]
     [BsonElement("address")]
-    public string Address { get; set; } = string.Empty;
+    public string? Address { get; set; }
 
     [JsonPropertyName("phone")]
     [BsonElement("phone")]
@@ -114,10 +113,9 @@ public sealed class CustomerDetails
     [BsonElement("name")]
     public string Name { get; set; } = string.Empty;
 
-    [Required]
     [JsonPropertyName("address")]
     [BsonElement("address")]
-    public string Address { get; set; } = string.Empty;
+    public string? Address { get; set; }
 
     [JsonPropertyName("customer_id")]
     [BsonElement("customer_id")]

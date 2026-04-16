@@ -33,6 +33,13 @@ public sealed class InvoicesController : ControllerBase
         return Ok(invoices.Select(ToResponse).ToList());
     }
 
+    [HttpDelete]
+    public async Task<ActionResult<object>> DeleteAll(CancellationToken cancellationToken)
+    {
+        var deletedCount = await _repository.DeleteAllAsync(cancellationToken);
+        return Ok(new { deleted_count = deletedCount });
+    }
+
     [HttpGet("{id:length(24)}")]
     public async Task<ActionResult<InvoiceResponse>> GetById(string id, CancellationToken cancellationToken)
     {

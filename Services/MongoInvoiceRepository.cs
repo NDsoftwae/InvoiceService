@@ -33,6 +33,12 @@ public sealed class MongoInvoiceRepository : IInvoiceRepository
         return record;
     }
 
+    public async Task<long> DeleteAllAsync(CancellationToken cancellationToken = default)
+    {
+        var result = await _collection.DeleteManyAsync(FilterDefinition<BsonDocument>.Empty, cancellationToken);
+        return result.DeletedCount;
+    }
+
     public async Task<IReadOnlyList<InvoiceRecord>> GetAllAsync(CancellationToken cancellationToken = default)
     {
         var documents = await _collection.Find(FilterDefinition<BsonDocument>.Empty)
