@@ -2,5 +2,5 @@ namespace InvoiceService.Services;
 
 public interface IUserAuthService
 {
-    bool ValidateCredentials(string? username, string? password);
+    Task<bool> ValidateCredentialsAsync(string? username, string? password, CancellationToken cancellationToken = default);
 }
