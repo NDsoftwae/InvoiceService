@@ -7,7 +7,7 @@ namespace InvoiceService.Controllers;
 
 [ApiController]
 [Route("api/invoices")]
-[ServiceFilter(typeof(RequireApiKeyAttribute))]
+[ServiceFilter(typeof(RequireApiKeyOrJwtAttribute))]
 public sealed class InvoicesController : ControllerBase
 {
     private readonly IInvoiceRepository _repository;
