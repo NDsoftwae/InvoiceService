@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
@@ -13,9 +12,8 @@ public sealed class InvoiceRecord
 
     public DateTime CreatedAtUtc { get; set; }
 
-    [Required]
     [BsonElement("invoice")]
-    public InvoiceDocument Invoice { get; set; } = new();
+    public InvoiceDocument? Invoice { get; set; }
 }
 
 public sealed class InvoiceResponse
@@ -24,31 +22,26 @@ public sealed class InvoiceResponse
 
     public DateTime CreatedAtUtc { get; init; }
 
-    public InvoiceDocument Invoice { get; init; } = new();
+    public InvoiceDocument? Invoice { get; init; }
 }
 
 public sealed class InvoiceDocument
 {
-    [Required]
     [JsonPropertyName("invoice_header")]
     [BsonElement("invoice_header")]
-    public InvoiceHeader InvoiceHeader { get; set; } = new();
+    public InvoiceHeader? InvoiceHeader { get; set; }
 
-    [Required]
-    [MinLength(1)]
     [JsonPropertyName("line_items")]
     [BsonElement("line_items")]
-    public List<InvoiceLineItem> LineItems { get; set; } = [];
+    public List<InvoiceLineItem?>? LineItems { get; set; }
 
-    [Required]
     [JsonPropertyName("totals")]
     [BsonElement("totals")]
-    public InvoiceTotals Totals { get; set; } = new();
+    public InvoiceTotals? Totals { get; set; }
 
-    [Required]
     [JsonPropertyName("payment_details")]
     [BsonElement("payment_details")]
-    public PaymentDetails PaymentDetails { get; set; } = new();
+    public PaymentDetails? PaymentDetails { get; set; }
 
     [JsonPropertyName("additional_info")]
     [BsonElement("additional_info")]
@@ -57,33 +50,28 @@ public sealed class InvoiceDocument
 
 public sealed class InvoiceHeader
 {
-    [Required]
     [JsonPropertyName("invoice_number")]
     [BsonElement("invoice_number")]
-    public string InvoiceNumber { get; set; } = string.Empty;
+    public string? InvoiceNumber { get; set; }
 
-    [Required]
     [JsonPropertyName("date")]
     [BsonElement("date")]
-    public string Date { get; set; } = string.Empty;
+    public string? Date { get; set; }
 
-    [Required]
     [JsonPropertyName("seller")]
     [BsonElement("seller")]
-    public SellerDetails Seller { get; set; } = new();
+    public SellerDetails? Seller { get; set; }
 
-    [Required]
     [JsonPropertyName("customer")]
     [BsonElement("customer")]
-    public CustomerDetails Customer { get; set; } = new();
+    public CustomerDetails? Customer { get; set; }
 }
 
 public sealed class SellerDetails
 {
-    [Required]
     [JsonPropertyName("name")]
     [BsonElement("name")]
-    public string Name { get; set; } = string.Empty;
+    public string? Name { get; set; }
 
     [JsonPropertyName("address")]
     [BsonElement("address")]
@@ -108,10 +96,9 @@ public sealed class SellerDetails
 
 public sealed class CustomerDetails
 {
-    [Required]
     [JsonPropertyName("name")]
     [BsonElement("name")]
-    public string Name { get; set; } = string.Empty;
+    public string? Name { get; set; }
 
     [JsonPropertyName("address")]
     [BsonElement("address")]
@@ -132,19 +119,17 @@ public sealed class CustomerDetails
 
 public sealed class InvoiceLineItem
 {
-    [Required]
     [JsonPropertyName("code")]
     [BsonElement("code")]
-    public string Code { get; set; } = string.Empty;
+    public string? Code { get; set; }
 
-    [Required]
     [JsonPropertyName("description")]
     [BsonElement("description")]
-    public string Description { get; set; } = string.Empty;
+    public string? Description { get; set; }
 
     [JsonPropertyName("quantity")]
     [BsonElement("quantity")]
-    public decimal Quantity { get; set; }
+    public decimal? Quantity { get; set; }
 
     [JsonPropertyName("unit")]
     [BsonElement("unit")]
@@ -153,17 +138,17 @@ public sealed class InvoiceLineItem
     [JsonPropertyName("unit_price")]
     [BsonElement("unit_price")]
     [BsonRepresentation(BsonType.Decimal128)]
-    public decimal UnitPrice { get; set; }
+    public decimal? UnitPrice { get; set; }
 
     [JsonPropertyName("vat_rate")]
     [BsonElement("vat_rate")]
     [BsonRepresentation(BsonType.Decimal128)]
-    public decimal VatRate { get; set; }
+    public decimal? VatRate { get; set; }
 
     [JsonPropertyName("total_inc_vat")]
     [BsonElement("total_inc_vat")]
     [BsonRepresentation(BsonType.Decimal128)]
-    public decimal TotalIncVat { get; set; }
+    public decimal? TotalIncVat { get; set; }
 
     [JsonPropertyName("pack_size")]
     [BsonElement("pack_size")]
@@ -180,22 +165,22 @@ public sealed class InvoiceTotals
     [JsonPropertyName("subtotal")]
     [BsonElement("subtotal")]
     [BsonRepresentation(BsonType.Decimal128)]
-    public decimal Subtotal { get; set; }
+    public decimal? Subtotal { get; set; }
 
     [JsonPropertyName("vat_total")]
     [BsonElement("vat_total")]
     [BsonRepresentation(BsonType.Decimal128)]
-    public decimal VatTotal { get; set; }
+    public decimal? VatTotal { get; set; }
 
     [JsonPropertyName("discount")]
     [BsonElement("discount")]
     [BsonRepresentation(BsonType.Decimal128)]
-    public decimal Discount { get; set; }
+    public decimal? Discount { get; set; }
 
     [JsonPropertyName("grand_total")]
     [BsonElement("grand_total")]
     [BsonRepresentation(BsonType.Decimal128)]
-    public decimal GrandTotal { get; set; }
+    public decimal? GrandTotal { get; set; }
 }
 
 public sealed class PaymentDetails
@@ -225,5 +210,5 @@ public sealed class AdditionalInfo
 {
     [JsonPropertyName("notes")]
     [BsonElement("notes")]
-    public List<string> Notes { get; set; } = [];
+    public List<string?>? Notes { get; set; }
 }
