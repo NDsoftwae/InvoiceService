@@ -1,5 +1,3 @@
-using System.Text.Json;
-using System.Text.Json.Nodes;
 using InvoiceService.Filters;
 using InvoiceService.Models;
 using InvoiceService.Services;
@@ -20,9 +18,9 @@ public sealed class InvoicesController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<InvoiceResponse>> Create([FromBody] JsonDocument invoice, CancellationToken cancellationToken)
+    public async Task<ActionResult<InvoiceResponse>> Create([FromBody] InvoiceDocument invoice, CancellationToken cancellationToken)
     {
-        var created = await _repository.CreateAsync(invoice.RootElement.GetRawText(), cancellationToken);
+        var created = await _repository.CreateAsync(invoice, cancellationToken);
         var response = ToResponse(created);
 
         return CreatedAtAction(nameof(GetById), new { id = response.Id }, response);
@@ -53,7 +51,7 @@ public sealed class InvoicesController : ControllerBase
         {
             Id = record.Id ?? string.Empty,
             CreatedAtUtc = record.CreatedAtUtc,
-            Invoice = JsonNode.Parse(record.RawJson)
+            Invoice = record.Invoice
         };
     }
 }

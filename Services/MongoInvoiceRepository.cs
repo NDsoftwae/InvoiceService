@@ -1,4 +1,3 @@
-using System.Text.Json;
 using InvoiceService.Configuration;
 using InvoiceService.Models;
 using Microsoft.Extensions.Options;
@@ -18,13 +17,12 @@ public sealed class MongoInvoiceRepository : IInvoiceRepository
         _collection = database.GetCollection<InvoiceRecord>(mongoSettings.CollectionName);
     }
 
-    public async Task<InvoiceRecord> CreateAsync(string rawJson, CancellationToken cancellationToken = default)
+    public async Task<InvoiceRecord> CreateAsync(InvoiceDocument invoice, CancellationToken cancellationToken = default)
     {
         var record = new InvoiceRecord
         {
             CreatedAtUtc = DateTime.UtcNow,
-            RawJson = rawJson,
-            InvoiceNumber = TryReadInvoiceNumber(rawJson)
+            Invoice = invoice
         };
 
         await _collection.InsertOneAsync(record, cancellationToken: cancellationToken);
@@ -41,18 +39,5 @@ public sealed class MongoInvoiceRepository : IInvoiceRepository
     public async Task<InvoiceRecord?> GetByIdAsync(string id, CancellationToken cancellationToken = default)
     {
         return await _collection.Find(x => x.Id == id).FirstOrDefaultAsync(cancellationToken);
-    }
-
-    private static string? TryReadInvoiceNumber(string rawJson)
-    {
-        using var document = JsonDocument.Parse(rawJson);
-
-        if (document.RootElement.TryGetProperty("invoice_header", out var header) &&
-            header.TryGetProperty("invoice_number", out var invoiceNumber))
-        {
-            return invoiceNumber.GetString();
-        }
-
-        return null;
     }
 }
