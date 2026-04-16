@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using System.Text.Json;
 using System.Text.Json.Serialization;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
@@ -50,6 +49,10 @@ public sealed class InvoiceDocument
     [JsonPropertyName("payment_details")]
     [BsonElement("payment_details")]
     public PaymentDetails PaymentDetails { get; set; } = new();
+
+    [JsonPropertyName("additional_info")]
+    [BsonElement("additional_info")]
+    public AdditionalInfo? AdditionalInfo { get; set; }
 }
 
 public sealed class InvoiceHeader
@@ -211,7 +214,18 @@ public sealed class PaymentDetails
     [BsonElement("sort_code")]
     public string? SortCode { get; set; }
 
-    [JsonExtensionData]
-    [BsonExtraElements]
-    public Dictionary<string, object>? ExtraFields { get; set; }
+    [JsonPropertyName("reference")]
+    [BsonElement("reference")]
+    public string? Reference { get; set; }
+
+    [JsonPropertyName("payment_terms")]
+    [BsonElement("payment_terms")]
+    public string? PaymentTerms { get; set; }
+}
+
+public sealed class AdditionalInfo
+{
+    [JsonPropertyName("notes")]
+    [BsonElement("notes")]
+    public List<string> Notes { get; set; } = [];
 }
